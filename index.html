@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="LaslesVPN - Secure and fast VPN service with global coverage">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet" />
+    <title>LaslesVPN - Secure VPN Service</title>
+    <link rel="stylesheet" href="static/styles/style.css" />
+    <style>
+        /* Кастомные easing функции */
+        :root {
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --ease-soft-bounce: cubic-bezier(0.28, 0.84, 0.42, 1);
+            --color-primary: #F53838;
+            --color-primary-hover: #e03131;
+            --color-text: #0B132A;
+            --color-text-light: #4F5665;
+        }
+
+        /* Анимация мягкого приземления */
+        @keyframes softLanding {
+            0% {
+                transform: translateY(-50px) scale(0.95);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Парящая анимация для карточек */
+        @keyframes gentleFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0.5deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-0.5deg);
+            }
+        }
+
+        /* Динамическое размытие */
+        @keyframes dynamicBlur {
+            0% {
+                filter: blur(12px);
+                opacity: 0;
+            }
+
+            100% {
+                filter: blur(0);
+                opacity: 1;
+            }
+        }
+
+        /* Перспективная трансформация */
+        @keyframes perspectiveEntry {
+            0% {
+                transform: perspective(1000px) rotateX(15deg) translateY(50px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: perspective(1000px) rotateX(0) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Микро-анимации */
+        .btn-hover-animate {
+            transition: all 0.4s var(--ease-out-expo);
+            transform-origin: center;
+        }
+
+        .btn-hover-animate:hover,
+        .btn-hover-animate:focus {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 12px 24px rgba(245, 56, 56, 0.3);
+        }
+
+        /* Применение анимаций */
+        .hero__image-wrapper {
+            animation: dynamicBlur 1.2s var(--ease-out-expo) forwards;
+            will-change: filter, opacity;
+        }
+
+        .stats__container {
+            animation: softLanding 0.8s var(--ease-soft-bounce) forwards;
+            will-change: transform, opacity;
+        }
+
+        .pricing__card {
+            animation: gentleFloat 4s infinite var(--ease-in-out-back);
+            will-change: transform;
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+
+        .features__content {
+            animation: perspectiveEntry 1s var(--ease-out-expo) forwards;
+            will-change: transform, opacity;
+        }
+
+        /* Параллакс слои */
+        .parallax-layer {
+            transition: transform 0.4s var(--ease-out-expo);
+            will-change: transform;
+        }
+
+        /* Градиентные тени */
+        .glow-shadow {
+            box-shadow: 0 20px 40px rgba(245, 56, 56, 0.15);
+            transition: box-shadow 0.4s var(--ease-out-expo);
+        }
+
+        .glow-shadow:hover,
+        .glow-shadow:focus {
+            box-shadow: 0 30px 60px rgba(245, 56, 56, 0.25);
+        }
+
+        /* Accessibility improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 3px;
+        }
+
+        button,
+        a {
+            transition: all 0.2s ease;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline-offset: 2px;
+        }
+
+        /* Mobile menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            position: relative;
+            z-index: 1002;
+        }
+
+        .mobile-menu-toggle__icon {
+            display: block;
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+
+        .mobile-menu-toggle__icon::before,
+        .mobile-menu-toggle__icon::after,
+        .mobile-menu-toggle__icon span {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2.5px;
+            background: var(--color-text);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle__icon::before {
+            top: 5px;
+        }
+
+        .mobile-menu-toggle__icon::after {
+            top: 11px;
+        }
+
+        .mobile-menu-toggle__icon span {
+            top: 17px;
+        }
+
+        .mobile-menu-toggle__icon span {
+            position: absolute;
+            left: 0;
+            top: 17px;
+            width: 100%;
+            height: 2.5px;
+            background: var(--color-text);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-toggle__icon::before {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-toggle__icon::after {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-toggle__icon span {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        @media (max-width: 768px) {
+
+            .nav,
+            .header__auth {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .header__container {
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="sr-only" href="#main-content">Skip to main content</a>
+
+    <header class="header" role="banner">
+        <div class="header__container">
+            <a href="#" class="logo-wrapper" aria-label="LaslesVPN Home">
+                <div class="icon-container">
+                    <img src="/впн залупа 2/static/images/logo.png" alt="logo-icon" class="logo-icon" width="24"
+                        height="24">
+                </div>
+                <span class="logo-text">Lasles<span>VPN</span></span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="nav" aria-label="Main navigation">
+                <ul class="nav__list" role="list">
+                    <li class="nav__item" role="listitem"><a href="#features" class="nav__link">Features</a></li>
+                    <li class="nav__item" role="listitem"><a href="#pricing" class="nav__link">Pricing</a></li>
+                    <li class="nav__item" role="listitem"><a href="#testimonials" class="nav__link">Testimonials</a>
+                    </li>
+                    <li class="nav__item" role="listitem"><a href="#help" class="nav__link">Help</a></li>
+                </ul>
+            </nav>
+
+            <!-- Auth Buttons -->
+            <div class="header__auth">
+                <button class="auth-button sign-in">Sign In</button>
+                <button class="auth-button sign-up">Sign Up</button>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button class="mobile-menu-toggle" aria-expanded="false">
+                <span class="mobile-menu-toggle__icon">
+                    <span></span>
+                </span>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <nav id="mobile-menu" class="mobile-menu" aria-label="Основное меню" aria-modal="true" aria-hidden="true"
+            role="dialog">
+            <ul class="mobile-nav__list" role="list">
+                <li class="mobile-nav__item"><a href="#features" class="menu-item">Features</a></li>
+                <li class="mobile-nav__item"><a href="#pricing" class="menu-item">Pricing</a></li>
+                <li class="mobile-nav__item"><a href="#testimonials" class="menu-item">Testimonials</a></li>
+                <li class="mobile-nav__item"><a href="#help" class="menu-item">Help</a></li>
+            </ul>
+            <div class="mobile-auth">
+                <button class="auth-button sign-in">Sign In</button>
+                <button class="auth-button sign-up">Sign Up</button>
+            </div>
+        </nav>
+        <div class="menu-overlay" aria-hidden="true"></div>
+    </header>
+
+    <main id="main-content">
+        <!-- Hero section -->
+        <section class="hero" id="hero">
+            <div class="container hero__container">
+                <div class="hero__content">
+                    <h1 class="hero__title">
+                        <span class="hero__title-regular">Want anything to be easy with</span>
+                        <span class="hero__title-bold">LaslesVPN</span>
+                    </h1>
+                    <p class="hero__desc">Secure VPN service with global coverage. Protect your privacy and access
+                        content from anywhere.</p>
+                    <button class="get-started-btn pulse-animation">Get Started</button>
+                </div>
+                <div class="hero__image-wrapper scroll-animate">
+                    <img src="static/images/Illustration 1 1.png" alt="VPN connection illustration" class="hero__img" />
+                </div>
+            </div>
+        </section>
+
+        <section class="stats" aria-label="Statistics">
+            <div class="stats__container scroll-animate">
+                <div class="stats__item">
+                    <div class="stats__icon-container">
+                        <img src="static/images/stats_icon1.png" alt="" aria-hidden="true" class="stats__icon">
+                    </div>
+                    <div class="stats__text">
+                        <div class="stats__number">90+</div>
+                        <div class="stats__label">Users</div>
+                    </div>
+                </div>
+
+                <div class="stats__divider" aria-hidden="true"></div>
+
+                <div class="stats__item">
+                    <div class="stats__icon-container">
+                        <img src="static/images/stats_icon2.png" alt="" aria-hidden="true" class="stats__icon">
+                    </div>
+                    <div class="stats__text">
+                        <div class="stats__number">30+</div>
+                        <div class="stats__label">Locations</div>
+                    </div>
+                </div>
+
+                <div class="stats__divider" aria-hidden="true"></div>
+
+                <div class="stats__item">
+                    <div class="stats__icon-container">
+                        <img src="static/images/stats_icon3.png" alt="" aria-hidden="true" class="stats__icon">
+                    </div>
+                    <div class="stats__text">
+                        <div class="stats__number">50+</div>
+                        <div class="stats__label">Servers</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container features__container">
+                <div class="features__image">
+                    <img src="static/images/Illustration 2 1.png" alt="VPN features illustration" />
+                </div>
+
+                <div class="features__content scroll-animate">
+                    <h2 class="features__title">We provide many features you can use</h2>
+                    <p class="features__desc">
+                        Comprehensive security solutions for all your online activities with unlimited possibilities.
+                    </p>
+                    <ul class="features__list">
+                        <li class="features__item">
+                            <svg class="features__icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="12" cy="12" r="12" fill="#2BBC28" />
+                                <path d="M7 12L10 15L17 8" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Powerful online protection.
+                        </li>
+                        <li class="features__item">
+                            <svg class="features__icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="12" cy="12" r="12" fill="#2BBC28" />
+                                <path d="M7 12L10 15L17 8" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Internet without borders
+                        </li>
+                        <li class="features__item">
+                            <svg class="features__icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="12" cy="12" r="12" fill="#2BBC28" />
+                                <path d="M7 12L10 15L17 8" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Supercharged VPN
+                        </li>
+                        <li class="features__item">
+                            <svg class="features__icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="12" cy="12" r="12" fill="#2BBC28" />
+                                <path d="M7 12L10 15L17 8" stroke="white" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            No specific time limits
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing" id="pricing" aria-label="Pricing plans">
+            <div class="container pricing__wrapper">
+                <div class="pricing__heading-container">
+                    <h2 class="pricing__heading">Choose your plan</h2>
+                    <p class="pricing__subheading">
+                        Flexible options for every user. Select the plan that fits your needs.
+                    </p>
+                </div>
+
+                <div class="pricing__container">
+                    <div class="pricing__card">
+                        <div class="pricing__card-content">
+                            <div class="pricing__card-top">
+                                <img src="static/images/Premium 1.png" alt="" class="pricing__img" aria-hidden="true" />
+                            </div>
+
+                            <div class="pricing__card-middle">
+                                <div class="pricing__title-container">
+                                    <h3 class="pricing__title">Free</h3>
+                                </div>
+
+                                <ul class="pricing__features">
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Unlimited bandwidth</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Encrypted connection</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">No traffic logs</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="pricing__card-bottom">
+                                <div class="pricing__price">Free</div>
+                                <button class="pricing__btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pricing__card">
+                        <div class="pricing__card-content">
+                            <div class="pricing__card-top">
+                                <img src="static/images/Premium 1.png" alt="" class="pricing__img" aria-hidden="true" />
+                            </div>
+
+                            <div class="pricing__card-middle">
+                                <div class="pricing__title-container">
+                                    <h3 class="pricing__title">Standard plan</h3>
+                                </div>
+
+                                <ul class="pricing__features">
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Unlimited bandwidth</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Encrypted connection</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">No traffic logs</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Works on all devices</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Connect anywhere</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="pricing__card-bottom">
+                                <div class="pricing__price">$9 <span class="pricing__slash">/</span><span>mo</span>
+                                </div>
+                                <button class="pricing__btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pricing__card pricing__card--highlighted">
+                        <div class="pricing__card-content">
+                            <div class="pricing__card-top">
+                                <img src="static/images/Premium 1.png" alt="" class="pricing__img" aria-hidden="true" />
+                            </div>
+
+                            <div class="pricing__card-middle">
+                                <div class="pricing__title-container">
+                                    <h3 class="pricing__title">Premium plan</h3>
+                                </div>
+
+                                <ul class="pricing__features">
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Unlimited bandwidth</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Encrypted connection</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">No traffic logs</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Works on all devices</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Connect anywhere</span>
+                                    </li>
+                                    <li class="pricing__feature">
+                                        <img src="static/images/tick-circle.png" alt="" class="pricing__tick"
+                                            aria-hidden="true" />
+                                        <span class="pricing__feature-text">Get new features</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="pricing__card-bottom">
+                                <div class="pricing__price">$12 <span class="pricing__slash">/</span><span>mo</span>
+                                </div>
+                                <button class="pricing__btn">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Global Network Section -->
+        <section class="network">
+            <div class="container network__container">
+                <h2 class="network__title">Huge global network of fast VPN</h2>
+                <p class="network__desc">
+                    Our servers are strategically located worldwide for optimal speed and reliability.
+                </p>
+                <div class="network__map-container">
+                    <img src="static/images/Global.png" alt="World map showing VPN server locations"
+                        class="network__map" />
+                </div>
+                <div class="network__sponsors">
+                    <img src="static/images/Sponsored 1.png"
+                        alt="Our partners: Netflix, Reddit, Amazon, Discord, Spotify" class="apps" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials" id="testimonials" aria-label="Customer testimonials">
+            <div class="testimonials__container">
+                <div class="testimonials__heading">
+                    <h2>Trusted by thousands of happy customers</h2>
+                    <p>Read what our users say about their experience with LaslesVPN.</p>
+                </div>
+                <div class="carousel" role="region" aria-label="Testimonials carousel">
+                    <div class="testimonials__cards" id="testimonial-cards">
+                        <div class="testimonial-card testimonial-card--active" role="group" aria-roledescription="slide"
+                            aria-label="1 of 3">
+                            <div class="testimonial-card__top">
+                                <img src="static/images/user1.png" alt="Brooklyn Simmons" class="testimonial-card__img">
+                                <div class="testimonial-card__info">
+                                    <div class="testimonial-card__name">Brooklyn Simmons</div>
+                                    <div class="testimonial-card__location">Warsaw, Poland</div>
+                                </div>
+                                <div class="testimonial-card__rating">
+                                    <span class="sr-only">Rating: 4.5 out of 5 stars</span>
+                                    <span aria-hidden="true">4.5</span>
+                                    <img src="static/images/star.png" alt="" aria-hidden="true">
+                                </div>
+                            </div>
+                            <p class="testimonial-card__text">“Wow... I am very happy to use this VPN, it turned out to
+                                be more than my expectations and so far there have been no problems. LaslesVPN always
+                                the best”.</p>
+                        </div>
+
+                        <div class="testimonial-card" role="group" aria-roledescription="slide" aria-label="2 of 3"
+                            hidden>
+                            <div class="testimonial-card__top">
+                                <img src="static/images/user2.png" alt="Darlene Robertson"
+                                    class="testimonial-card__img">
+                                <div class="testimonial-card__info">
+                                    <div class="testimonial-card__name">Darlene Robertson</div>
+                                    <div class="testimonial-card__location">Warsaw, Poland</div>
+                                </div>
+                                <div class="testimonial-card__rating">
+                                    <span class="sr-only">Rating: 4.5 out of 5 stars</span>
+                                    <span aria-hidden="true">4.5</span>
+                                    <img src="static/images/star.png" alt="" aria-hidden="true">
+                                </div>
+                            </div>
+                            <p class="testimonial-card__text">“I've tried several VPN services, but LaslesVPN stands out
+                                with its speed and reliability. Highly recommend for anyone needing secure connections”.
+                            </p>
+                        </div>
+
+                        <div class="testimonial-card" role="group" aria-roledescription="slide" aria-label="3 of 3"
+                            hidden>
+                            <div class="testimonial-card__top">
+                                <img src="static/images/user3.png" alt="Darrell Steward" class="testimonial-card__img">
+                                <div class="testimonial-card__info">
+                                    <div class="testimonial-card__name">Darrell Steward</div>
+                                    <div class="testimonial-card__location">Warsaw, Poland</div>
+                                </div>
+                                <div class="testimonial-card__rating">
+                                    <span class="sr-only">Rating: 4.5 out of 5 stars</span>
+                                    <span aria-hidden="true">4.5</span>
+                                    <img src="static/images/star.png" alt="" aria-hidden="true">
+                                </div>
+                            </div>
+                            <p class="testimonial-card__text">“The mobile app works perfectly. I travel frequently and
+                                this VPN has been a lifesaver for accessing content from different regions securely”.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonials__navigation">
+                    <div class="testimonials__bullets" role="tablist" aria-label="Select a testimonial">
+                        <button class="bullet bullet--active" role="tab" aria-selected="true"
+                            aria-controls="testimonial-1">Testimonial 1</button>
+                        <button class="bullet" role="tab" aria-selected="false"
+                            aria-controls="testimonial-2">Testimonial 2</button>
+                        <button class="bullet" role="tab" aria-selected="false"
+                            aria-controls="testimonial-3">Testimonial 3</button>
+                    </div>
+                    <div class="testimonials__arrows">
+                        <button class="arrow arrow--left" aria-label="Previous testimonial">
+                            <svg class="arrow__icon" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="22.5" cy="22.5" r="22.5" fill="#D1D1D1" />
+                                <path d="M25.5 30L19.5 24L25.5 18" stroke="white" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="arrow arrow--right" aria-label="Next testimonial">
+                            <svg class="arrow__icon" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="22.5" cy="22.5" r="22.5" fill="#F53838" />
+                                <path d="M19.5 18L25.5 24L19.5 30" stroke="white" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subscription Section -->
+        <section class="subscribe" aria-label="Subscription">
+            <div class="subscribe__container">
+                <div class="subscribe__content">
+                    <h2 class="subscribe__heading">Subscribe now for get special features!</h2>
+                    <p class="subscribe__text">Join thousands of satisfied users</p>
+                </div>
+                <button class="subscribe__btn">Subscribe now</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__left">
+                <div class="footer__logo">
+                    <img src="static/images/logo.png" alt="" aria-hidden="true" />
+                    <span class="footer__logo-text">
+                        Lasles<span class="footer__logo-vpn">VPN</span>
+                    </span>
+                </div>
+                <p class="footer__desc">
+                    Secure and reliable VPN service with global coverage. Protect your privacy and access content from
+                    anywhere.
+                </p>
+                <div class="footer__socials">
+                    <a href="#" class="footer__social" aria-label="Facebook"><img src="static/images/facebook.png"
+                            alt="" aria-hidden="true"></a>
+                    <a href="#" class="footer__social" aria-label="WhatsApp"><img src="static/images/whatsapp.png"
+                            alt="" aria-hidden="true"></a>
+                    <a href="#" class="footer__social" aria-label="YouTube"><img src="static/images/youtube.png" alt=""
+                            aria-hidden="true"></a>
+                </div>
+                <p class="footer__copyright">&copy; 2023 LaslesVPN. All rights reserved.</p>
+            </div>
+
+            <div class="footer__right">
+                <div class="footer__column">
+                    <h3 class="footer__title">Product</h3>
+                    <ul class="footer__list">
+                        <li><a href="#">Download</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Locations</a></li>
+                        <li><a href="#">Server</a></li>
+                        <li><a href="#">Countries</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__column">
+                    <h3 class="footer__title">Engage</h3>
+                    <ul class="footer__list">
+                        <li><a href="#">LaslesVPN?</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Privacy policy</a></li>
+                        <li><a href="#">Terms of service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__column">
+                    <h3 class="footer__title">Earn money</h3>
+                    <ul class="footer__list">
+                        <li><a href="#">Become partner</a></li>
+                        <li><a href="#">Affiliate</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Theme toggle functionality
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+
+                // Save preference to localStorage
+                const isDark = document.body.classList.contains('dark-theme');
+                localStorage.setItem('darkTheme', isDark);
+            });
+
+            // Check for saved theme preference
+            if (localStorage.getItem('darkTheme') === 'true') {
+                document.body.classList.add('dark-theme');
+            }
+
+            // Mobile menu functionality
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            mobileMenuToggle.addEventListener('click', () => {
+                const expanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+                mobileMenuToggle.setAttribute('aria-expanded', !expanded);
+                mobileNav.classList.toggle('active');
+                document.body.style.overflow = expanded ? '' : 'hidden';
+            });
+
+            // Close mobile menu when clicking on a link
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    mobileNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Testimonial data
+            const testimonials = [
+                {
+                    name: "Alex Johnson",
+                    location: "New York, USA",
+                    rating: 5,
+                    text: "LaslesVPN has completely changed how I work remotely. The speeds are incredible and I've never experienced any downtime. Highly recommended!",
+                    img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23F53838'/%3E%3Ccircle cx='35' cy='40' r='5' fill='white'/%3E%3Ccircle cx='65' cy='40' r='5' fill='white'/%3E%3Cpath d='M30,70 Q50,55 70,70' stroke='white' stroke-width='3' fill='none'/%3E%3C/svg%3E"
+                },
+                {
+                    name: "Sophia Williams",
+                    location: "London, UK",
+                    rating: 4,
+                    text: "I travel frequently for work and LaslesVPN has been a lifesaver. The ability to switch between countries seamlessly is fantastic.",
+                    img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23467fcf'/%3E%3Ccircle cx='35' cy='40' r='5' fill='white'/%3E%3Ccircle cx='65' cy='40' r='5' fill='white'/%3E%3Cpath d='M30,70 Q50,55 70,70' stroke='white' stroke-width='3' fill='none'/%3E%3C/svg%3E"
+                },
+                {
+                    name: "Michael Chen",
+                    location: "Tokyo, Japan",
+                    rating: 5,
+                    text: "The security features are top-notch. I feel much safer browsing online knowing my data is encrypted and protected.",
+                    img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%2328a745'/%3E%3Ccircle cx='35' cy='40' r='5' fill='white'/%3E%3Ccircle cx='65' cy='40' r='5' fill='white'/%3E%3Cpath d='M30,70 Q50,55 70,70' stroke='white' stroke-width='3' fill='none'/%3E%3C/svg%3E"
+                },
+                {
+                    name: "Emma Rodriguez",
+                    location: "Madrid, Spain",
+                    rating: 5,
+                    text: "Customer support is exceptional. They helped me set up on all my devices quickly and were available 24/7 for any questions.",
+                    img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23ffc107'/%3E%3Ccircle cx='35' cy='40' r='5' fill='white'/%3E%3Ccircle cx='65' cy='40' r='5' fill='white'/%3E%3Cpath d='M30,70 Q50,55 70,70' stroke='white' stroke-width='3' fill='none'/%3E%3C/svg%3E"
+                },
+                {
+                    name: "David Kim",
+                    location: "Seoul, South Korea",
+                    rating: 4,
+                    text: "The pricing is very reasonable for the features you get. I've tried several VPN services and this offers the best value.",
+                    img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%236f42c1'/%3E%3Ccircle cx='35' cy='40' r='5' fill='white'/%3E%3Ccircle cx='65' cy='40' r='5' fill='white'/%3E%3Cpath d='M30,70 Q50,55 70,70' stroke='white' stroke-width='3' fill='none'/%3E%3C/svg%3E"
+                }
+            ];
+
+            // Carousel functionality
+            const carousel = document.querySelector('.carousel');
+            const indicatorsContainer = document.querySelector('.carousel-indicators');
+            let currentIndex = 0;
+            let autoPlayInterval;
+
+            // Create testimonial cards
+            testimonials.forEach((testimonial, index) => {
+                // Create card
+                const card = document.createElement('div');
+                card.className = 'testimonial-card';
+                card.dataset.index = index;
+
+                // Create stars
+                let stars = '';
+                for (let i = 0; i < 5; i++) {
+                    stars += i < testimonial.rating ? '★' : '☆';
+                }
+
+                // Card content
+                card.innerHTML = `
+                    <div class="testimonial-card__top">
+                        <img src="${testimonial.img}" alt="${testimonial.name}" class="testimonial-card__img">
+                        <div class="testimonial-card__info">
+                            <div class="testimonial-card__name">${testimonial.name}</div>
+                            <div class="testimonial-card__location">${testimonial.location}</div>
+                        </div>
+                        <div class="testimonial-card__rating">${stars}</div>
+                    </div>
+                    <div class="testimonial-card__text">${testimonial.text}</div>
+                `;
+
+                carousel.appendChild(card);
+
+                // Create indicator
+                const indicator = document.createElement('div');
+                indicator.className = 'indicator';
+                indicator.dataset.index = index;
+                indicator.addEventListener('click', () => goToTestimonial(index));
+                indicatorsContainer.appendChild(indicator);
+            });
+
+            // Get all cards and indicators
+            const cards = document.querySelectorAll('.testimonial-card');
+            const indicators = document.querySelectorAll('.indicator');
+
+            // Set initial positions
+            updateCarousel();
+
+            // Navigation buttons
+            document.querySelector('.prev-btn').addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+                updateCarousel();
+                resetAutoPlay();
+            });
+
+            document.querySelector('.next-btn').addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % testimonials.length;
+                updateCarousel();
+                resetAutoPlay();
+            });
+
+            // Card click navigation
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const index = parseInt(card.dataset.index);
+                    if (index !== currentIndex) {
+                        currentIndex = index;
+                        updateCarousel();
+                        resetAutoPlay();
+                    }
+                });
+            });
+
+            // Auto play
+            function startAutoPlay() {
+                autoPlayInterval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % testimonials.length;
+                    updateCarousel();
+                }, 5000);
+            }
+
+            function resetAutoPlay() {
+                clearInterval(autoPlayInterval);
+                startAutoPlay();
+            }
+
+            // Pause on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoPlayInterval);
+            });
+
+            carousel.addEventListener('mouseleave', () => {
+                startAutoPlay();
+            });
+
+            // Update carousel positions
+            function updateCarousel() {
+                cards.forEach((card, index) => {
+                    card.classList.remove('active', 'prev', 'next', 'far', 'far-right');
+
+                    // Calculate position
+                    const position = (index - currentIndex + testimonials.length) % testimonials.length;
+
+                    if (index === currentIndex) {
+                        card.classList.add('active');
+                    } else if (position === 1) {
+                        card.classList.add('next');
+                    } else if (position === testimonials.length - 1) {
+                        card.classList.add('prev');
+                    } else if (position < currentIndex) {
+                        card.classList.add('far');
+                    } else {
+                        card.classList.add('far-right');
+                    }
+                });
+
+                // Update indicators
+                indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            // Start autoplay
+            startAutoPlay();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuOverlay = document.querySelector('.menu-overlay');
+
+            // Функция для открытия/закрытия меню
+            function toggleMenu() {
+                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                menuToggle.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.setAttribute('aria-hidden', isExpanded);
+
+                if (!isExpanded) {
+                    // Открываем меню
+                    menuOverlay.style.display = 'block';
+                    setTimeout(() => {
+                        menuOverlay.style.opacity = '1';
+                    }, 10);
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    // Закрываем меню
+                    menuOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        menuOverlay.style.display = 'none';
+                    }, 300);
+                    document.body.style.overflow = '';
+                }
+            }
+
+            // Клик по бургеру
+            menuToggle.addEventListener('click', toggleMenu);
+
+            // Клик по оверлею
+            menuOverlay.addEventListener('click', toggleMenu);
+
+            // Клик по пунктам меню
+            const menuItems = mobileMenu.querySelectorAll('a');
+            menuItems.forEach(item => {
+                item.addEventListener('click', toggleMenu);
+            });
+
+            // Закрытие по клавише Esc
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
