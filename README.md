@@ -33,7 +33,7 @@
 
 1.  **Клонируйте репозиторий:**
     ```bash
-    git clone [https://github.com/ВАШ_АККАУНТ/laslesvpn-landing-page.git](https://github.com/ВАШ_АККАУНТ/laslesvpn-landing-page.git)
+    git clone [https://github.com/anya-frontend-ux/laslesvpn-landing-page.git](https://github.com/anya-frontend-ux/laslesvpn-landing-page.git)
     ```
 2.  **Откройте файл:**
     Просто откройте файл `index.html` в любом современном веб-браузере (Chrome, Firefox, Safari и т.д.).
